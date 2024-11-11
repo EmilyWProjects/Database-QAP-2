@@ -1,3 +1,5 @@
+--Tables
+
 CREATE TABLE students (
 
     id SERIAL PRIMARY KEY
@@ -41,6 +43,8 @@ CREATE TABLE enrollments (
 );
 
 
+--Insert info into tables
+
 INSERT INTO students (first_name, last_name, email, school_enrollment_date) VALUES
 ('Daisy', 'Masey', 'daisy_masey@email.com', '2016-07-05'),
 ('Cathy', 'Hatte', 'cathy_hatte@email.com', '2013-11-21'),
@@ -69,3 +73,41 @@ INSERT INTO enrollments (student_id, course_id, enrollment_date) VALUES
 (4, 4, '2016-03-21'),  
 (2, 1, '2016-03-21'),  
 (5, 1, '2016-05-21');  
+
+
+--Queries
+
+--List students enrolled in a course
+
+SELECT CONCAT(students.first_name, ' ', students.last_name ) AS full_name
+FROM students
+JOIN enrollments ON students.id = enrollments.student_id
+JOIN courses ON enrollments.course_id = courses.id
+WHERE courses.course_name = 'History 101';
+
+
+--List courses and who teaches them
+
+SELECT courses.course_name, CONCAT(professors.first_name, ' ', professors.last_name) AS professor_full_name
+FROM courses
+JOIN professors ON courses.professor_id = professors.id;
+
+
+--List courses that have students enrolled
+
+SELECT DISTINCT courses.course_name
+FROM courses
+JOIN enrollments ON courses.id = enrollments.course_id;
+
+
+--Update email
+
+UPDATE students
+SET email = 'NEWdaisy_masey@NEWemail.com'
+WHERE id = 1;
+
+
+--Delete student from course
+
+DELETE FROM enrollments
+WHERE student_id = 2 AND course_id = 1;
