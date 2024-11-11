@@ -1,3 +1,5 @@
+--Tables
+
 CREATE TABLE products (
 
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -37,6 +39,8 @@ CREATE TABLE order_items (
 );
 
 
+--Insert info into tables
+
 INSERT INTO products (product_name, price, stock_quantity) VALUES
 ('Knife Set', 50.99, 20),
 ('Mirror', 30.99, 20),
@@ -72,3 +76,43 @@ INSERT INTO order_items (order_id, product_id, quantity) VALUES
 (4, 5, 3),
 (5, 5, 5),
 (5, 2, 2);
+
+
+--Queries
+
+--List product names and stock for each
+
+SELECT product_name, stock_quantity
+FROM products
+
+
+--List products and quantites ordered
+
+SELECT products.product_name, order_items.quantity 
+FROM order_items
+JOIN products ON order_items.product_id = products_id
+WHERE order_items.order_id = 1;
+
+
+--List all orders of a customer
+
+SELECT orders.id AS order_id, order_items.product_id, order_items.quantity
+FROM orders
+JOIN order_items ON orders.id = order_items.order_id
+WHERE orders.customer_id = 2;
+
+
+-- Update stock quantity
+
+UPDATE products
+JOIN order_items ON products.id = order_items.product_id
+SET products.stock_quantity = products.stock_quantity - order_items.quantity
+WHERE order_items.order_id = 3;
+
+
+--Remove order and items in relation to
+
+DELETE FROM order_items 
+WHERE order_id = 4;
+DELETE FROM orders 
+WHERE id = 5;
